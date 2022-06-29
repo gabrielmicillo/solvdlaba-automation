@@ -1,0 +1,7 @@
+{
+  "albumId": 1,
+  "id": 1,
+  <#if title??>"title": "${title}",</#if>
+  "url": "https://via.placeholder.com/600/92c952",
+  <#if thumbnailUrl??>"thumbnailUrl": "${thumbnailUrl}"</#if>
+}
