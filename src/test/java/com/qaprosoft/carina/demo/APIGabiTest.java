@@ -17,13 +17,7 @@ package com.qaprosoft.carina.demo;
 
 import com.qaprosoft.apitools.validation.JsonCompareKeywords;
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
-import com.qaprosoft.carina.core.foundation.api.APIMethodPoller;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
-import com.qaprosoft.carina.core.foundation.utils.tag.Priority;
-import com.qaprosoft.carina.core.foundation.utils.tag.TestPriority;
-import com.qaprosoft.carina.demo.api.DeleteUserMethod;
-import com.qaprosoft.carina.demo.api.GetUserMethods;
-import com.qaprosoft.carina.demo.api.PostUserMethod;
 import com.qaprosoft.carina.demo.gabiAPI.GetPhotoMethod;
 import com.qaprosoft.carina.demo.gabiAPI.PatchPhotoMethod;
 import com.qaprosoft.carina.demo.gabiAPI.PostPhotoMethod;
@@ -33,8 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.lang.invoke.MethodHandles;
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class APIGabiTest implements IAbstractTest {
@@ -61,14 +53,24 @@ public class APIGabiTest implements IAbstractTest {
 
     @Test()
     @MethodOwner(owner = "gabi")
-    public void testPatchAPhoto(){
+    public void testPostPhotosWithoutTitle() {
         PostPhotoMethod postPhotoMethod = new PostPhotoMethod();
         postPhotoMethod.setProperties("api/photos/photos.properties");
-        postPhotoMethod.callAPI();
+        postPhotoMethod.getProperties().remove("title");
+        postPhotoMethod.callAPIExpectSuccess();
+        postPhotoMethod.validateResponse(JSONCompareMode.STRICT, JsonCompareKeywords.ARRAY_CONTAINS.getKey());
+    }
+
+    @Test()
+    @MethodOwner(owner = "gabi")
+    public void testPatchAPhoto() {
+        PostPhotoMethod postPhotoMethod = new PostPhotoMethod();
+        postPhotoMethod.setProperties("api/photos/photos.properties");
+        postPhotoMethod.callAPIExpectSuccess();
         postPhotoMethod.validateResponse();
         PatchPhotoMethod patchPhotoMethod = new PatchPhotoMethod();
         patchPhotoMethod.setProperties("api/photos/photos.properties");
-        patchPhotoMethod.callAPI();
+        patchPhotoMethod.callAPIExpectSuccess();
         patchPhotoMethod.validateResponse();
     }
 

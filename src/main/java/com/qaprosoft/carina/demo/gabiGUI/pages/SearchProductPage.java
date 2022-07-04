@@ -1,6 +1,6 @@
 package com.qaprosoft.carina.demo.gabiGUI.pages;
 
-import com.mongodb.DBPortPool;
+import com.qaprosoft.carina.core.foundation.utils.R;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.PageOpeningStrategy;
 import com.qaprosoft.carina.core.gui.AbstractPage;
@@ -8,7 +8,6 @@ import com.qaprosoft.carina.demo.gabiGUI.components.Product;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchProductPage extends AbstractPage {
@@ -25,8 +24,14 @@ public class SearchProductPage extends AbstractPage {
         setPageOpeningStrategy(PageOpeningStrategy.BY_ELEMENT);
     }
 
-    public ProductPage getProduct(String productTitle){
-        for (Product product : searchProducts){
+    public String getWantedProductTitle(String wantedProductData) {
+        String wantedProduct = R.TESTDATA.get(wantedProductData);
+        return wantedProduct;
+    }
+
+    public ProductPage getProduct(String productTitle) {
+        for (Product product : searchProducts) {
+            product.assertUIObjectPresent(5);
             String currentProduct = product.getProductTitle();
             System.out.println(currentProduct);
             if (productTitle.equalsIgnoreCase(currentProduct)) {

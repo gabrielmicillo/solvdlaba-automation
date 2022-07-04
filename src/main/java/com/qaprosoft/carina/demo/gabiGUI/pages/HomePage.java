@@ -15,21 +15,15 @@
  */
 package com.qaprosoft.carina.demo.gabiGUI.pages;
 
-import com.qaprosoft.carina.core.foundation.utils.Configuration;
-import com.qaprosoft.carina.core.foundation.utils.R;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.gui.AbstractPage;
 import com.qaprosoft.carina.demo.gabiGUI.components.NavigateMenu;
-import com.qaprosoft.carina.demo.gui.components.FooterMenu;
-import com.qaprosoft.carina.demo.gui.components.WeValuePrivacyAd;
-import com.qaprosoft.carina.demo.gui.pages.BrandModelsPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.util.List;
 
 
 public class HomePage extends AbstractPage {
@@ -44,25 +38,35 @@ public class HomePage extends AbstractPage {
     @FindBy(xpath = "//a[@href='https://www.amazon.jobs']")
     private ExtendedWebElement workWithUs;
 
+    @FindBy(xpath = "//a[@data-csa-c-content-id='nav_cs_gb']")
+    private ExtendedWebElement todayDealsButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
         setPageURL("");
     }
 
-    public void clickDontChangeButton() {
+    //    This pop-up appears when browser does not open native language page, when this happens this method closes it
+    public void clickDontChangeButtonIfPresent() {
         if (dontChangeButton.isElementPresent()) {
             dontChangeButton.click();
         }
     }
 
-    public NavigateMenu getNavigateMenu(){
+    public NavigateMenu getNavigateMenu() {
         return navigateMenu;
     }
 
-    public WorkWithUsPage clickWorkWithUs(){
+    public WorkWithUsPage clickWorkWithUs() {
+        workWithUs.assertElementPresent();
         workWithUs.click();
         return new WorkWithUsPage(driver);
+    }
+
+    public TodaysDealsPage clickTodayDealsButton() {
+        todayDealsButton.assertElementWithTextPresent("Ofertas del Día", 5);
+        todayDealsButton.click();
+        return new TodaysDealsPage(driver);
     }
 
 }

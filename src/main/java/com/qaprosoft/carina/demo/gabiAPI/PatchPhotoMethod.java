@@ -27,7 +27,7 @@ import com.qaprosoft.carina.core.foundation.utils.Configuration;
 @Endpoint(url = "${base_url}/photos/5001", methodType = HttpMethodType.PATCH)
 @RequestTemplatePath(path = "api/photos/_patch/rq.json")
 @ResponseTemplatePath(path = "api/photos/_patch/rs.json")
-@SuccessfulHttpStatus(status = HttpResponseStatusType.ACCEPTED_202)
+@SuccessfulHttpStatus(status = HttpResponseStatusType.OK_200)
 public class PatchPhotoMethod extends AbstractApiMethodV2 {
 
     public PatchPhotoMethod() {

@@ -19,11 +19,11 @@ public class Product extends AbstractUIObject {
         super(driver, searchContext);
     }
 
-    public String getProductTitle(){
+    public String getProductTitle() {
         return productTitle.getText();
     }
 
-    public ProductPage clickProductTitle(){
+    public ProductPage clickProductTitle() {
         productTitle.click();
         return new ProductPage(driver);
     }

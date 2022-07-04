@@ -1,6 +1,7 @@
 package com.qaprosoft.carina.demo;
 
 import com.qaprosoft.carina.core.foundation.IAbstractTest;
+import com.qaprosoft.carina.core.foundation.dataprovider.annotations.XlsDataSourceParameters;
 import com.qaprosoft.carina.core.foundation.utils.ownership.MethodOwner;
 import com.qaprosoft.carina.demo.gabiGUI.components.NavigateMenu;
 import com.qaprosoft.carina.demo.gabiGUI.pages.*;
@@ -15,12 +16,10 @@ public class WebAmazonTest implements IAbstractTest {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
         Assert.assertTrue(homePage.isPageOpened(), "Page not opened.");
-        homePage.clickDontChangeButton();
+        homePage.clickDontChangeButtonIfPresent();
         NavigateMenu navigateMenu = homePage.getNavigateMenu();
-        pause(2);
         EmailLoginPage emailLoginPage = navigateMenu.clickLoginButton();
         Assert.assertTrue(emailLoginPage.isPageOpened(), "Email page not opened.");
-        pause(2);
         emailLoginPage.fillWithEmail();
         PasswordLoginPage passwordLoginPage = emailLoginPage.clickContinueButton();
         Assert.assertTrue(passwordLoginPage.isPageOpened(), "Password page not opened.");
@@ -35,39 +34,31 @@ public class WebAmazonTest implements IAbstractTest {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
         Assert.assertTrue(homePage.isPageOpened(), "Page not opened.");
-        homePage.clickDontChangeButton();
+        homePage.clickDontChangeButtonIfPresent();
         NavigateMenu navigateMenu = homePage.getNavigateMenu();
         EmailLoginPage emailLoginPage = navigateMenu.clickLoginButton();
         Assert.assertTrue(emailLoginPage.isPageOpened(), "Email page not opened.");
-        pause(2);
         emailLoginPage.fillWithEmail();
         PasswordLoginPage passwordLoginPage = emailLoginPage.clickContinueButton();
         Assert.assertTrue(passwordLoginPage.isPageOpened(), "Password page not opened.");
         passwordLoginPage.fillWithPassword();
         passwordLoginPage.clickSubmitButton();
         Assert.assertTrue(navigateMenu.isAccountLoggedIn(), "Account is not logged in.");
-//        HomePage homePage = new HomePage(getDriver());
-//        homePage.open();
-//        Assert.assertTrue(homePage.isPageOpened(), "Page not opened.");
-//        homePage.clickDontChangeButton();
-//        NavigateMenu navigateMenu = homePage.getNavigateMenu();
-//        Assert.assertTrue(navigateMenu.isAccountLoggedIn(), "Account is not logged in.");
         emailLoginPage = navigateMenu.clickSignOutButton();
         Assert.assertTrue(emailLoginPage.isPageOpened(), "Email page not opened.");
     }
 
-    @Test()
+    @Test
     @MethodOwner(owner = "gabi")
-    public void testAddToCart(){
+    public void testAddToCart() {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
         Assert.assertTrue(homePage.isPageOpened(), "Page not opened.");
-        homePage.clickDontChangeButton();
+        homePage.clickDontChangeButtonIfPresent();
         NavigateMenu navigateMenu = homePage.getNavigateMenu();
         pause(2);
         EmailLoginPage emailLoginPage = navigateMenu.clickLoginButton();
         Assert.assertTrue(emailLoginPage.isPageOpened(), "Email page not opened.");
-        pause(2);
         emailLoginPage.fillWithEmail();
         PasswordLoginPage passwordLoginPage = emailLoginPage.clickContinueButton();
         Assert.assertTrue(passwordLoginPage.isPageOpened(), "Password page not opened.");
@@ -76,27 +67,40 @@ public class WebAmazonTest implements IAbstractTest {
         Assert.assertTrue(navigateMenu.isAccountLoggedIn(), "Account is not logged in.");
         SearchProductPage searchProductPage = navigateMenu.searchProduct();
         Assert.assertTrue(searchProductPage.isPageOpened(), "Search page not opened.");
-        pause(2);
-        ProductPage productPage = searchProductPage.getProduct("adidas Boca Juniors 3rd 22/23 - Camiseta para hombre");
+        ProductPage productPage = searchProductPage.getProduct(searchProductPage.getWantedProductTitle("expected_search_product_title"));
         Assert.assertTrue(productPage.isPageOpened(), "Product page not opened.");
-        Assert.assertEquals(productPage.getProductTitle(), "adidas Boca Juniors 3rd 22/23 - Camiseta para hombre", "Invalid title.");
-        Assert.assertEquals(productPage.getProductPrice(), "US$89.99", "Invalid price.");
-        pause(2);
+        Assert.assertEquals(productPage.getProductTitle(), searchProductPage.getWantedProductTitle("expected_search_product_title"), "Invalid title.");
+        Assert.assertEquals(productPage.getProductPrice(), productPage.getWantedProductPrice("expected_search_product_price"), "Invalid price.");
         AddedToCartPage addedToCartPage = productPage.clickAddToCartButton();
         Assert.assertTrue(addedToCartPage.isPageOpened());
     }
 
-    @Test()
+    @Test(dataProvider = "DataProvider")
     @MethodOwner(owner = "gabi")
-    public void testSearchJobs() {
+    @XlsDataSourceParameters(path = "xls/dataprovider.xlsx", sheet = "Jobs", dsUid = "TUID", dsArgs = "jobs", testRailColumn = "jobs")
+    public void testSearchJobs(String jobs) {
         HomePage homePage = new HomePage(getDriver());
         homePage.open();
         Assert.assertTrue(homePage.isPageOpened(), "Page not opened.");
-        pause(2);
         WorkWithUsPage workWithUsPage = homePage.clickWorkWithUs();
         Assert.assertTrue(workWithUsPage.isPageOpened());
-        pause(2);
-        JobResultsPage jobResultsPage = workWithUsPage.searchJob();
+        JobResultsPage jobResultsPage = workWithUsPage.searchJob(jobs);
         Assert.assertTrue(jobResultsPage.isPageOpened());
+    }
+
+    @Test
+    @MethodOwner(owner = "gabi")
+    public void testSearchOutletProducts() {
+        HomePage homePage = new HomePage(getDriver());
+        homePage.open();
+        Assert.assertTrue(homePage.isPageOpened(), "Page not opened.");
+        homePage.clickDontChangeButtonIfPresent();
+        TodaysDealsPage todaysDealsPage = homePage.clickTodayDealsButton();
+        Assert.assertTrue(todaysDealsPage.isPageOpened(), "Today's deals page is not opened.");
+        OutletPage outletPage = todaysDealsPage.clickOutletButton();
+        Assert.assertTrue(outletPage.isPageOpened(), "Outlet page is not opened.");
+        SearchOutletProductPage searchOutletProductPage = outletPage.getNavigateMenu().searchProductOutlet();
+        Assert.assertTrue(searchOutletProductPage.isPageOpened(), "Search Outlet Product Page is not opened.");
+
     }
 }

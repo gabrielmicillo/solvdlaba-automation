@@ -1,5 +1,6 @@
 package com.qaprosoft.carina.demo.gabiGUI.pages;
 
+import com.qaprosoft.carina.core.foundation.utils.R;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.PageOpeningStrategy;
 import com.qaprosoft.carina.core.gui.AbstractPage;
@@ -29,18 +30,24 @@ public class ProductPage extends AbstractPage {
         setPageOpeningStrategy(PageOpeningStrategy.BY_ELEMENT);
     }
 
-    public AddedToCartPage clickAddToCartButton(){
+    public AddedToCartPage clickAddToCartButton() {
         selectSizeButton.click();
         selectSButton.click();
+        addToCartButton.assertElementPresent(5);
         addToCartButton.click();
         return new AddedToCartPage(driver);
     }
 
-    public String getProductTitle(){
+    public String getProductTitle() {
         return productTitle.getText();
     }
 
-    public String getProductPrice(){
+    public String getProductPrice() {
         return productPrice.getText();
+    }
+
+    public String getWantedProductPrice(String wantedProductPrice) {
+        String wantedPrice = R.TESTDATA.get(wantedProductPrice);
+        return wantedPrice;
     }
 }

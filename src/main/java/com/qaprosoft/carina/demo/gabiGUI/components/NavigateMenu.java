@@ -19,10 +19,8 @@ import com.qaprosoft.carina.core.foundation.utils.R;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.gui.AbstractUIObject;
 import com.qaprosoft.carina.demo.gabiGUI.pages.EmailLoginPage;
+import com.qaprosoft.carina.demo.gabiGUI.pages.SearchOutletProductPage;
 import com.qaprosoft.carina.demo.gabiGUI.pages.SearchProductPage;
-import com.qaprosoft.carina.demo.gui.pages.CompareModelsPage;
-import com.qaprosoft.carina.demo.gui.pages.HomePage;
-import com.qaprosoft.carina.demo.gui.pages.NewsPage;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -32,10 +30,10 @@ public class NavigateMenu extends AbstractUIObject {
     @FindBy(id = "nav-link-accountList-nav-line-1")
     private ExtendedWebElement loginButton;
 
-    @FindBy(xpath = "//a[@data-nav-ref='nav_youraccount_btn']")
+    @FindBy(xpath = ".//a[@data-nav-ref='nav_youraccount_btn']")
     private ExtendedWebElement accountName;
 
-    @FindBy(xpath = "//*[@id='nav-item-signout']/span")
+    @FindBy(xpath = ".//*[@id='nav-item-signout']/span")
     private ExtendedWebElement signOutButton;
 
     @FindBy(id = "twotabsearchtextbox")
@@ -49,25 +47,34 @@ public class NavigateMenu extends AbstractUIObject {
         super(driver, searchContext);
     }
 
-    public EmailLoginPage clickLoginButton(){
+    public EmailLoginPage clickLoginButton() {
+        loginButton.assertElementPresent(5);
         loginButton.click();
         return new EmailLoginPage(driver);
     }
 
-    public boolean isAccountLoggedIn(){
+    public boolean isAccountLoggedIn() {
         return accountName.isElementPresent();
     }
 
-    public EmailLoginPage clickSignOutButton(){
+    public EmailLoginPage clickSignOutButton() {
         loginButton.hover();
         pause(3);
         signOutButton.click();
         return new EmailLoginPage(driver);
     }
 
-    public SearchProductPage searchProduct(){
+    public SearchProductPage searchProduct() {
         searchField.type(R.TESTDATA.get("searchProduct"));
         sendSearch.click();
         return new SearchProductPage(driver);
     }
+
+    public SearchOutletProductPage searchProductOutlet() {
+        searchField.type(R.TESTDATA.get("searchProductOutlet"));
+        sendSearch.click();
+        return new SearchOutletProductPage(driver);
+    }
+
+
 }

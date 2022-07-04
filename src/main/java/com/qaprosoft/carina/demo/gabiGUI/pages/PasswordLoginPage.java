@@ -7,8 +7,6 @@ import com.qaprosoft.carina.core.gui.AbstractPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-import javax.ws.rs.POST;
-
 public class PasswordLoginPage extends AbstractPage {
 
     @FindBy(id = "signInSubmit")
@@ -23,11 +21,11 @@ public class PasswordLoginPage extends AbstractPage {
         setPageOpeningStrategy(PageOpeningStrategy.BY_ELEMENT);
     }
 
-    public void fillWithPassword(){
+    public void fillWithPassword() {
         passwordField.type(R.TESTDATA.get("password"));
     }
 
-    public HomePage clickSubmitButton(){
+    public HomePage clickSubmitButton() {
         submitPassButton.click();
         return new HomePage(driver);
     }

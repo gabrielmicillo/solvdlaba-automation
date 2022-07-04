@@ -21,11 +21,12 @@ public class EmailLoginPage extends AbstractPage {
         setPageOpeningStrategy(PageOpeningStrategy.BY_ELEMENT);
     }
 
-    public void fillWithEmail(){
+    public void fillWithEmail() {
+        emailField.assertElementPresent(5);
         emailField.type(R.TESTDATA.get("user_email"));
     }
 
-    public PasswordLoginPage clickContinueButton(){
+    public PasswordLoginPage clickContinueButton() {
         continueButton.click();
         return new PasswordLoginPage(driver);
     }

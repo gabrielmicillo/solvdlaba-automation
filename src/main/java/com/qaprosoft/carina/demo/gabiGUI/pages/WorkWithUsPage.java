@@ -1,6 +1,5 @@
 package com.qaprosoft.carina.demo.gabiGUI.pages;
 
-import com.qaprosoft.carina.core.foundation.utils.R;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.PageOpeningStrategy;
 import com.qaprosoft.carina.core.gui.AbstractPage;
@@ -24,9 +23,11 @@ public class WorkWithUsPage extends AbstractPage {
         setPageOpeningStrategy(PageOpeningStrategy.BY_ELEMENT);
     }
 
-    public JobResultsPage searchJob(){
+    public JobResultsPage searchJob(String job) {
+        jobField.assertElementPresent(5);
         jobField.click();
-        jobField.type(R.TESTDATA.get("job"));
+        jobField.type(job);
+//        jobField.type(R.TESTDATA.get(job));
         searchButton.click();
         return new JobResultsPage(driver);
     }
